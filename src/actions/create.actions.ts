@@ -4,37 +4,49 @@ import { normalize } from 'path';
 import { exists, mkdir } from "fs/promises";
 import { runFileHelper } from "@/helpers/file.helper";
 import { TemplatesNames } from "@/lib/helpers/templates-names-enum.helper";
+import { isNamePatternInvalid, normalizeStringToKebabCase } from "@/helpers/file-name.helper";
 
 export const create = async (inputs: Input[]) => {
-    const pathInput = inputs.find((input) => input.name === 'path')?.value;
-    const resourceNameInput = inputs.find((input) => input.name === 'name')?.value;
+    let pathInput = inputs.find((input) => input.name === 'path')?.value;
+    let resourceNameInput = inputs.find((input) => input.name === 'name')?.value;
     if (!pathInput || !resourceNameInput) {
         throw new Error("Path or resource name is missing");
     }
 
     const currentWorkingDirectory = process.cwd();
+    pathInput = pathInput.endsWith('/') ? `${pathInput}routes` : `${pathInput}/routes`;
     const pathResolved = await Bun.resolve(currentWorkingDirectory, normalize(pathInput));
 
     if (!await exists(pathResolved)) {
-        await mkdir(pathInput);
+        await mkdir(pathInput, { recursive: true });
     }
 
-    await createFiles(resourceNameInput, pathInput + 'routes/');
+    if (isNamePatternInvalid(resourceNameInput)) {
+        resourceNameInput = normalizeStringToKebabCase(resourceNameInput);
+    }
+
+    await initHandlersToCreateFiles(
+        resourceNameInput,
+        pathInput + `/${resourceNameInput}/`
+    );
 }
 
-const createFiles = async (resourceName: string, dirPath: string): Promise<void> => {
+const initHandlersToCreateFiles = async (resourceName: string, dirPath: string): Promise<void> => {
     await Promise.all([
         await createHandlerFile({
             resourceName,
             path: dirPath,
+            fileName: `${resourceName}.handler.ts`
         }),
         await createRouterFile({
             resourceName,
             path: dirPath,
+            fileName: `${resourceName}.router.ts`
         }),
         await createIndexFile({
             resourceName,
             path: dirPath,
+            fileName: `${resourceName}.index.ts`
         }),
     ])
 }
@@ -44,7 +56,7 @@ const createHandlerFile = async (fileInfo: FileToCreate): Promise<void> => {
         await runFileHelper(
             fileInfo.resourceName,
             TemplatesNames.handler,
-            fileInfo.path + `${fileInfo.resourceName}.handler.ts`
+            fileInfo.path + fileInfo.fileName
         );
     } catch (err) {
         console.log(err);
@@ -56,7 +68,7 @@ const createRouterFile = async (fileInfo: FileToCreate): Promise<void> => {
         await runFileHelper(
             fileInfo.resourceName,
             TemplatesNames.router,
-            fileInfo.path + `${fileInfo.resourceName}.router.ts`
+            fileInfo.path + fileInfo.fileName
         );
     } catch (err) {
         console.log(err);
@@ -68,7 +80,7 @@ const createIndexFile = async (fileInfo: FileToCreate): Promise<void> => {
         await runFileHelper(
             fileInfo.resourceName,
             TemplatesNames.index,
-            fileInfo.path + `${fileInfo.resourceName}.index.ts`
+            fileInfo.path + fileInfo.fileName
         );
     } catch (err) {
         console.error(err);
