@@ -1,0 +1,12 @@
+.idea/
+.github/
+.gitignore
+CONTRIBUTING.md
+
+test/
+node_modules/
+
+# configuration
+tsconfig.json
+/.vscode
+eslint.config.js
