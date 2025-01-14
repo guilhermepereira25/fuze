@@ -10,3 +10,7 @@ node_modules/
 tsconfig.json
 /.vscode
 eslint.config.js
+
+
+#source
+src/

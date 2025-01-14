@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { initCommands } from '@/commands/command';
 import { program } from 'commander';
 import packageJson from '../../package.json' with { type: "json" };
