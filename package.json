@@ -1,5 +1,5 @@
 {
-  "name": "fuze",
+  "name": "fuze-cli",
   "module": "src/bin/main.ts",
   "type": "module",
   "version": "0.0.1",
