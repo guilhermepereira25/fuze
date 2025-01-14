@@ -2,6 +2,7 @@
   "name": "fuze",
   "module": "src/bin/main.ts",
   "type": "module",
+  "version": "0.0.1",
   "scripts": {
     "clean": "rm -rf dist && echo 'Done.'",
     "build": "bun build ./src/bin/main.ts --target bun --outdir ./dist",
