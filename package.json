@@ -2,7 +2,7 @@
   "name": "fuze-cli",
   "module": "src/bin/main.ts",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "clean": "rm -rf dist && echo 'Done.'",
     "build": "bun build ./src/bin/main.ts --target bun --outdir ./dist",
@@ -29,6 +29,7 @@
     "commander": "^13.0.0",
     "eslint": "^9.17.0",
     "fs-extra": "^11.2.0",
+    "g": "^2.0.1",
     "inquirer": "^12.3.0"
   },
   "publishConfig": {
