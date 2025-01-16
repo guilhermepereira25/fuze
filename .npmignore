@@ -13,4 +13,6 @@ eslint.config.js
 
 
 #source
-src/
+src/*
+!src/templates/
+!src/templates/**
