@@ -1,6 +1,7 @@
 import templatesPathConstant from "@/lib/constants/templates-path.constant";
 import { type BunFile } from "bun";
 import { TemplatesNames } from "@/lib/helpers/templates-names-enum.helper";
+import { resolveRelativeTemplatePath } from "./template-path.helper";
 
 export const runFileHelper = async (
     resourceName: string,
@@ -34,7 +35,7 @@ export const resolveTemplatePath = (template: TemplatesNames): string => {
             throw new Error('TemplatePathNotImplemented');
     }
 
-    return Bun.resolveSync(templatePath, import.meta.dir);
+    return resolveRelativeTemplatePath(import.meta.dir, templatePath);
 }
 
 export const getTemplateContent = async (file: BunFile): Promise<string> => {
