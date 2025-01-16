@@ -25,13 +25,13 @@ export const create = async (inputs: Input[]) => {
         resourceNameInput = normalizeStringToKebabCase(resourceNameInput);
     }
 
-    await initHandlersToCreateFiles(
+    await initHelperToCreateRouterFolderStructure(
         resourceNameInput,
         pathInput + `/${resourceNameInput}/`
     );
 }
 
-const initHandlersToCreateFiles = async (resourceName: string, dirPath: string): Promise<void> => {
+const initHelperToCreateRouterFolderStructure = async (resourceName: string, dirPath: string): Promise<void> => {
     await Promise.all([
         await createHandlerFile({
             resourceName,
