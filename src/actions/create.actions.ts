@@ -1,6 +1,6 @@
 import type { Input } from "@/lib/actions/input";
 import type { FileToCreate } from "@/lib/actions/file-to-create";
-import { normalize } from 'path';
+import path, { normalize } from 'path';
 import { exists, mkdir } from "fs/promises";
 import { runFileHelper } from "@/helpers/file.helper";
 import { TemplatesNames } from "@/lib/helpers/templates-names-enum.helper";
@@ -15,10 +15,10 @@ export const create = async (inputs: Input[]) => {
 
     const currentWorkingDirectory = process.cwd();
     pathInput = pathInput.endsWith('/') ? `${pathInput}routes` : `${pathInput}/routes`;
-    const pathResolved = await Bun.resolve(currentWorkingDirectory, normalize(pathInput));
+    const pathResolved = path.join(currentWorkingDirectory, normalize(pathInput));
 
     if (!await exists(pathResolved)) {
-        await mkdir(pathInput, { recursive: true });
+        await mkdir(pathResolved, { recursive: true });
     }
 
     if (isNamePatternInvalid(resourceNameInput)) {
