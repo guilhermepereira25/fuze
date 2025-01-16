@@ -2,7 +2,7 @@
   "name": "fuze-cli",
   "module": "src/bin/main.ts",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "clean": "rm -rf dist && echo 'Done.'",
     "build": "bun build ./src/bin/main.ts --target bun --outdir ./dist",
